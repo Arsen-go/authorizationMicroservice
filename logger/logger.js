@@ -14,7 +14,7 @@ const transport = new (winston.transports.DailyRotateFile)({
   filename: 'logs/authServiceLogger-%DATE%.log',
   datePattern: 'YYYY-MM-DD-HH',
   zippedArchive: true,
-  maxSize: '20m',
+  maxSize: '40m',
   maxFiles: '14d',
 });
 
