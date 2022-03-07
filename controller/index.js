@@ -1,30 +1,29 @@
-const jsonwebtoken = require("jsonwebtoken");
+const { tradeTokenForUser, createToken } = require("../authRepository");
+const { logger } = require("../logger");
 
-class AuthController {
-  createToken(data, secret, expiresIn) {
-    const authToken = jsonwebtoken.sign(
-      data,
-      secret,
-      { expiresIn }
-    );
+class AuthRepository {
+    parse(req, res) {
+        try {
+            const { authToken, secret } = req.body;
+            const decoded = tradeTokenForUser(authToken, secret);
+            if (!decoded) return res.status(401).send({ error: 'Unauthenticated!' });
+            res.send({ decoded }).status(200);
+        } catch (error) {
+            logger.error(`AuthRepository: Failed to parse token: ${error}`);
+            res.status(500).send({ error: 'Something failed!' });
+        }
+    };
 
-    return authToken;
-  };
-
-  tradeTokenForUser(token, secret) {
-    try {
-      if (token && secret) {
-        token = token.replace("Bearer ", "");
-        const decoded = jsonwebtoken.verify(token, secret);
-
-        return { decoded };
-      } else {
-        return { decoded: null };
-      }
-    } catch (error) {
-      return { error };
+    authenticate(req, res) {
+        try {
+            const { data, secret, expiresIn } = req.body;
+            const authToken = createToken(data, secret, expiresIn);
+            res.send({ authToken }).status(200);
+        } catch (error) {
+            logger.error(`AuthRepository: Failed to authenticate data: ${error}`);
+            res.status(500).send({ error: 'Something failed!' });
+        }
     }
-  };
 }
 
-module.exports = new AuthController();
+module.exports = new AuthRepository();
