@@ -1,13 +1,13 @@
 const jsonwebtoken = require("jsonwebtoken");
 
 class AuthController {
-  createToken(data, secret) {
+  createToken(data, secret, expiresIn) {
     const authToken = jsonwebtoken.sign(
       data,
       secret,
-      // { expiresIn: 11122 }
+      { expiresIn }
     );
-    
+
     return authToken;
   };
 
@@ -19,7 +19,7 @@ class AuthController {
 
         return { decoded };
       } else {
-        return null;
+        return { decoded: null };
       }
     } catch (error) {
       return { error };

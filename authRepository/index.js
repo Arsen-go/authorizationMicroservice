@@ -9,19 +9,18 @@ class AuthRepository {
             if (!decoded) res.status(401).send({ error: 'Unauthenticated!' });
             res.send({ decoded }).status(200);
         } catch (error) {
-            logger.info(`AuthRepository: Failed to parse token: ${error}`);
+            logger.error(`AuthRepository: Failed to parse token: ${error}`);
             res.status(500).send({ error: 'Something failed!' });
         }
     };
 
     async authenticate(req, res) {
         try {
-            const { data, secret } = req.body;
-            if (!Object.keys(req.body).length) res.status(400).send({ error: 'Something failed!' });
-            const authToken = createToken(data, secret);
+            const { data, secret, expiresIn } = req.body;
+            const authToken = createToken(data, secret, expiresIn);
             res.send({ authToken }).status(200);
         } catch (error) {
-            logger.info(`AuthRepository: Failed to authenticate data: ${error}`);
+            logger.error(`AuthRepository: Failed to authenticate data: ${error}`);
             res.status(500).send({ error: 'Something failed!' });
         }
     }

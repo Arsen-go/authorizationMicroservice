@@ -3,12 +3,13 @@ require("./db");
 const app = express();
 const cors = require("cors");
 const authRepository = require("./authRepository");
+const { validateCreateRequest, validateCheckRequest } = require("./validator");
 
 app.use(express.json());
 app.use(cors());
 
 app.listen(process.env.PORT || 4000, () => { console.log(`Auth Service is running on port ${process.env.PORT || 4000}`) });
 
-app.post('/auth/create', (req, res) => authRepository.authenticate(req, res));
+app.post('/auth/createToken', validateCreateRequest, authRepository.authenticate);
 
-app.post('/auth/check', (req, res) => authRepository.parse(req, res));
+app.post('/auth/checkToken', validateCheckRequest, authRepository.parse);
