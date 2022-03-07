@@ -14,7 +14,7 @@ class AuthRepository {
         }
     };
 
-    async authenticate(req, res) {
+    authenticate(req, res) {
         try {
             const { data, secret, expiresIn } = req.body;
             const authToken = createToken(data, secret, expiresIn);
