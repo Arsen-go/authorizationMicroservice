@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha __tests__/*.test.js --timeout 20000"
   },
   "repository": {
     "type": "git",
@@ -18,10 +18,14 @@
   "homepage": "https://github.com/Arsen-go/authService#readme",
   "dependencies": {
     "celebrate": "^15.0.1",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
+    "mocha": "^9.2.2",
     "mongoose": "^6.2.4",
+    "supertest": "^6.2.2",
     "winston": "^3.6.0",
     "winston-daily-rotate-file": "^4.6.1"
   }
