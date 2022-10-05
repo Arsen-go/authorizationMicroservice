@@ -1,4 +1,4 @@
-const { tradeTokenForUser, createToken } = require("../authRepository");
+const { tradeTokenForUser, createToken, createRefreshToken } = require("../authRepository");
 const { logger } = require("../logger");
 
 class AuthRepository {
@@ -16,9 +16,10 @@ class AuthRepository {
 
     authenticate(req, res) {
         try {
-            const { data, secret, expiresIn } = req.body;
+            const { data, secret, expiresIn, refreshExpiresIn } = req.body;
             const authToken = createToken(data, secret, expiresIn);
-            res.send({ authToken }).status(200);
+            const refreshToken = createRefreshToken(data, secret, refreshExpiresIn ? refreshExpiresIn : expiresIn * 2);
+            res.send({ authToken, refreshToken }).status(200);
         } catch (error) {
             logger.error(`AuthRepository: Failed to authenticate data: ${error}`);
             res.status(500).send({ error: 'Something failed!' });

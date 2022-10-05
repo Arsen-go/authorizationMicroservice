@@ -11,6 +11,16 @@ class AuthController {
     return authToken;
   };
 
+  createRefreshToken(data, secret, expiresIn) {
+    const refreshToken = jsonwebtoken.sign({
+      message: "use this for refresh auth token",
+      metadata: "refreshtoken",
+      data
+    }, secret, { expiresIn });
+    
+    return refreshToken;
+  }
+
   tradeTokenForUser(token, secret) {
     try {
       if (token && secret) {
