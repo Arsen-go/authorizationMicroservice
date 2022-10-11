@@ -5,7 +5,8 @@ class Schema {
         data: Joi.required(),
         //string length if will be greater than 115 characters jwt can fail
         secret: Joi.string().pattern(new RegExp('[a-zA-Z0-9]{5,115}$')).required(),
-        expiresIn: Joi.number().required()
+        expiresIn: Joi.number().required(),
+        refreshExpiresIn: Joi.number()
     }).required();
 
     checkSchema = Joi.object({
