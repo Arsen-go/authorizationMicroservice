@@ -12,11 +12,9 @@ class AuthController {
   };
 
   createRefreshToken(data, secret, expiresIn) {
-    const refreshToken = jsonwebtoken.sign({
-      message: "use this for refresh auth token",
-      metadata: "refreshtoken",
+    const refreshToken = jsonwebtoken.sign(
       data
-    }, secret, { expiresIn });
+    , secret, { expiresIn });
     
     return refreshToken;
   }
